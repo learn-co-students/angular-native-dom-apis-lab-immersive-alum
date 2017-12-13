@@ -2,29 +2,28 @@ function SomeDirective() {
   return {
     template: [
       '<div>',
-        '<h3>{{ some.text }}</h3>',
-          '<span>Click here to replace the text</span>',
-        '</div>'
-      ].join(''),
-    require: 'someDirective',
-      controller: function() {
-        this.text = 'Replace this text!'
+        '<h3>{{ counter }}</h3>',
+      '</div>'
+    ].join(''),
+    controller: function($scope) {
+        $scope.counter = 0
       },
       controllerAs: 'some',
     link: function (scope, elem, attrs, ctrl) {
       var actualElement = elem[0]
+
+      var spanElement = actualElement.querySelector('h3')
+
+      document.addEventListener('keydown', function() {
+        scope.counter=+1
+
+        scope.$apply()
+      })
   
-            var spanElement = actualElement.querySelector('span')
-
-            spanElement.addEventListener('click', function () {
-                ctrl.text = 'Thank you for clicking!'
-
-                scope.$apply()
-            })
       }
     }
   }
   
   angular
-    .module('app')
-  .directive('someDirective', SomeDirective)
+   .module('app')
+   .directive('someDirective', SomeDirective)
